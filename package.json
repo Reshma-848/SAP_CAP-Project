@@ -10,11 +10,15 @@
     "@sap/cds": "^8",
     "@sap/hana-client": "^2.23.26",
     "@sap/hdi-deploy": "^5.3.2",
-    "@sap/xssec": "^4.2.8",
+    "@sap/xssec": "^4",
     "express": "^4"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-elearningapp": "cds watch --open elearningapp/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy e_Learning --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
   },
   "cds": {
     "build": {
@@ -31,7 +35,15 @@
     "requires": {
       "db": {
         "kind": "hana-cloud"
-      }
+      },
+      "auth": "xsuaa"
     }
+  },
+  "sapux": [
+    "app/elearningapp"
+  ],
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.29"
   }
 }
